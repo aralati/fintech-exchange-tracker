@@ -1,45 +1,68 @@
-# fintech-exchange-tracker
-A Python-based real-time currency exchange rate tracker and conversion module designed for Fintech applications.
-requests==2.31.0
-python-dotenv==1.0.0
-import requests
-import logging
-from typing import Dict, Optional
+# Fintech Exchange Tracker 💱
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)
+![Tested with pytest](https://img.shields.io/badge/tested%20with-pytest-0A9EDC.svg)
+![License](https://img.shields.io/badge/License-MIT-green.svg)
 
-class ExchangeRateTracker:
-    """
-    Real-time currency exchange rate tracker for Fintech applications.
-    """
-    def __init__(self):
-        self.base_url = "https://api.exchangerate-api.com/v4/latest/"
+A lightweight Python module for real-time currency exchange rate tracking and conversion, built for Fintech use cases. Includes in-memory caching to reduce redundant API calls, a simple CLI for quick conversions, and a full automated test suite.
 
-    def get_rates(self, base_currency: str = "USD") -> Optional[Dict]:
-        """Fetches current exchange rates for the given base currency."""
-        try:
-            logging.info(f"Fetching current rates for {base_currency}...")
-            response = requests.get(f"{self.base_url}{base_currency}")
-            response.raise_for_status()
-            data = response.json()
-            return data.get("rates")
-        except requests.exceptions.RequestException as e:
-            logging.error(f"API Connection Error: {e}")
-            return None
+## ⚙️ Features
+- **Real-time rates** — Fetches live exchange rates from a public API
+- **In-memory caching** — Avoids redundant API calls within a configurable time window
+- **Single & batch conversion** — Convert to one currency or several at once
+- **CLI support** — Run conversions directly from the command line
+- **Error handling** — Custom exceptions for invalid input and failed API calls
+- **Fully tested** — Unit tests using `pytest` and mocked API responses
 
-    def convert_currency(self, amount: float, from_currency: str, to_currency: str) -> float:
-        """Converts an amount from one currency to another."""
-        rates = self.get_rates(from_currency)
-        if rates and to_currency in rates:
-            converted_amount = amount * rates[to_currency]
-            logging.info(f"Success: {amount} {from_currency} = {converted_amount:.2f} {to_currency}")
-            return converted_amount
-        else:
-            logging.warning("Invalid currency or rate not found.")
-            return 0.0
+## 📂 Project Structure
+fintech-exchange-tracker/
+├── exchange_tracker.py
+├── requirements.txt
+├── tests/
+│   └── test_exchange_tracker.py
+└── README.md
 
-if __name__ == "__main__":
-    tracker = ExchangeRateTracker()
-    tracker.convert_currency(2500.0, "USD", "EUR")
+## 🛠️ Quick Start
 
+```bash
+git clone https://github.com/aralati/fintech-exchange-tracker.git
+cd fintech-exchange-tracker
+pip install -r requirements.txt
 
+Run a conversion via CLI:
+python exchange_tracker.py 100 USD EUR
+
+Or use it as a module:
+from exchange_tracker import ExchangeRateTracker
+
+tracker = ExchangeRateTracker()
+result = tracker.convert(100, "USD", "EUR")
+print(result)  # e.g. 92.0
+
+# Convert to multiple currencies at once
+batch = tracker.convert_batch(100, "USD", ["EUR", "GBP", "TRY"])
+print(batch)
+
+🧪 Running Tests
+
+pytest tests/
+
+Tests use mocked API responses, so they run instantly and without network access.
+
+🗺️ Roadmap
+
+	•	Add support for historical exchange rate lookups
+	•	Add persistent (disk-based) caching option
+	•	Package as a pip-installable module
+
+🧩 Tech Stack
+
+Python Requests Pytest Argparse
+
+📄 License
+
+MIT
+
+👤 Author
+
+Aral Atilla — GitHub
