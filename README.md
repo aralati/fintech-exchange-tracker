@@ -15,12 +15,15 @@ A lightweight Python module for real-time currency exchange rate tracking and co
 - **Fully tested** — Unit tests using `pytest` and mocked API responses
 
 ## 📂 Project Structure
+```
 fintech-exchange-tracker/
 ├── exchange_tracker.py
 ├── requirements.txt
 ├── tests/
 │   └── test_exchange_tracker.py
 └── README.md
+```
+
 
 ## 🛠️ Quick Start
 
